@@ -32,13 +32,26 @@ function saveToDB($file){
     echo "得到檔案".$file."<br>";
     echo "LOADING<br>";
 
+    $dsn="mysql:host=localhost;charset=utf8;dbname=s1100422";
+    $pdo= new PDO($dsn,'s1100422','s1100422');
+
     //直接顯示檔案內容
     $display=fopen($file,'a+');
+    $count=0;
     while(!feof($display)){
-        echo fgets($display)."<br>";
+        $str=explode(",",fgets($display));
+        echo "<pre>";
+        print_r($str);
+        echo "</pre>";
+        if($count>0 && count($str)==4){
+            $sql="INSERT into `gamers` (`id`,`name`,`title`,`style`) 
+                values ('{$str[0]}','{$str[1]}','{$str[2]}','{$str[3]}')";
+                $pdo->exec($sql);
+        }
+        $count++;
     }
     //  \r\n斷行
-    fwrite($display,"6,GAMERBEE,SFV,FTG\r\n");
+    echo "total write: ".($count-1);
     fclose($display); //關閉檔案(重要)
 }
 ?>
