@@ -18,7 +18,27 @@ if(!empty($_FILES['file']['tmp_name'])){
     echo "original filename=>".$_FILES['file']['name']."<br>";
 
     move_uploaded_file($_FILES['file']['tmp_name'],"../file/".$newFileName);
-    //echo上傳的檔案
-    echo "<a href='../file/{$newFileName}'>{$_FILES['file']['name']}</a>";
+
+    //上傳的檔案名用a tag 顯示出來
+    // echo "<a href='../file/{$newFileName}'>{$_FILES['file']['name']}</a>";
+
+    //如果副檔名為txt或csv，套入自訂函式saveToDB處理
+    if($subname=='txt' || $subname=='csv'){
+        saveToDB("../file/".$newFileName);
+    }
+}
+
+function saveToDB($file){
+    echo "得到檔案".$file."<br>";
+    echo "LOADING<br>";
+
+    //直接顯示檔案內容
+    $display=fopen($file,'a+');
+    while(!feof($display)){
+        echo fgets($display)."<br>";
+    }
+    //  \r\n斷行
+    fwrite($display,"6,GAMERBEE,SFV,FTG\r\n");
+    fclose($display); //關閉檔案(重要)
 }
 ?>
