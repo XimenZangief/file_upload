@@ -22,7 +22,10 @@
 <body>
 <h1 class="header">文字檔案匯入練習</h1>
 <!---建立檔案上傳機制--->
-
+<form action="./api/csv_upload.php" method="POST" enctype="multipart/form-data">
+    <input type="file" name="file" >選擇檔案
+    <input type="submit" value="送出">
+</form>
 
 
 <!----讀出匯入完成的資料----->
